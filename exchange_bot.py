@@ -23,9 +23,13 @@ CONTACT_DETAILS = [
         "confirm": 1,
     }
 ]
+# Notify url to get notified when a ticket is found
+# see https://docs.ntfy.sh/ for more info
+NTFY_URL = False
 REFRESH_TIMEOUT = 2
 FORM_SUBMIT_TIMEOUT = 0.5
-# gets the form data before submitting it, makes requests look more legit, probably not needed
+# gets the form data before submitting it, 
+# makes requests look more legit, probably not needed since no csrf token is used
 GET_BEFORE_POST = True 
 FORM_GET_TIMEOUT = 0.2
 
@@ -36,7 +40,7 @@ headers = {
     "User-Agent": chrome,
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
     "Host": "tickets.pukkelpop.be",
-    "Referer": "https://tickets.pukkelpop.be/nl/meetup/demand/",
+    "Referer": "https://tickets.pukkelpop.be/nl/meetup/demand/combi/",
     "Upgrade-Insecure-Requests": "1",
     "Connection": "keep-alive",
     "Accept-Encoding": "gzip, deflate, br",
@@ -65,6 +69,12 @@ while True:
                 if not link.get("href") in links_used:
                     # add time to print
                     print("Found new link: " + link.get("href"))
+                    if NTFY_URL:
+                        session.post(NTFY_URL, data=f"Found new pukkelpop Ticket {ticket_type}", headers={
+                            "Title": "Pkp Ticket Found",
+                            "Click": link.get("href")
+                        })
+                    
                     form_url = link.get("href")
                     post_headers = {
                         "Referer": form_url,
@@ -76,6 +86,7 @@ while True:
                             time.sleep(FORM_GET_TIMEOUT)
                             print("Trying to get form for ticket")
                             session.get(form_url, headers=headers)
+                        
                         time.sleep(FORM_SUBMIT_TIMEOUT)
                         print("Trying to send form for " + contact_detail["email"])
                         resp = session.post(form_url, headers=post_headers, data=contact_detail)
