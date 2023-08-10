@@ -5,6 +5,7 @@ First change the constants at the top in exchange_bot.py:
 - which tickets you want
 - what contact details you want to use
 - what the timeouts are when checking for new tickets
+- if you want to receive notifications via ntfy.sh
 
 then run this to install and run it in a virtualenvironment
 ``` bash
