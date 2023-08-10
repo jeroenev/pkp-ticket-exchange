@@ -2,15 +2,24 @@ import requests, bs4, time
 from fake_useragent import UserAgent
 
 TICKET_TYPES = [
-    "combi/a", # combi chill
-    "combi/b", # combi relax 
-    "combi/n", # combi no camping
+    # "day1/a", # vrijdag chill
+    # "day1/b", # vrijdag relax
+    # "day1/n", # vrijdag no camping
+    # "day2/a", # zaterdag chill
+    # "day2/b", # zaterdag relax
+    # "day2/n", # zaterdag no camping
+    # "day3/a", # zondag chill
+    # "day3/b", # zondag relax
+    # "day3/n", # zondag no camping
+    "combi/a", # Combi chill
+    "combi/b", # Combi relax
+    "combi/n", # Combi no camping
 ]
 CONTACT_DETAILS = [
     {
         "firstname": "Firstname",
         "lastname": "Lastname",
-        "email": "firstname.lastname@hotmail.com",
+        "email": "email-adress@hotmail.com",
         "confirm": 1,
     }
 ]
